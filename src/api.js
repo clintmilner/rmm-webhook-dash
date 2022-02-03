@@ -1,6 +1,6 @@
 const express = require('express')
 const serverless = require('serverless-http')
-const bodyParser = require("body-parser")
+const bodyParser = require('body-parser')
 const diskdb = require('diskdb')
 const cors = require('cors')
 const app = express()
@@ -15,7 +15,7 @@ diskdb.connect(dbPath, ['alerts']);
 app.use(cors())
 app.use(bodyParser.json())
 
-router.post("/hook",  (req, res) => {
+router.post('/hook',  (req, res) => {
     const {hostname, deviceId, siteId} = req?.body
 
     // validate the data is good
