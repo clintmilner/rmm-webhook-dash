@@ -20,9 +20,7 @@ const App = () => {
 
   return (
     <div className="dashboard">
-        {
-          alerts?.map(({hostname, siteName}, idx) => (<p key={idx}>{hostname} - {siteName}</p>))
-        }
+      <pre >{JSON.stringify(alerts)}</pre>
     </div>
   );
 }
