@@ -46,7 +46,7 @@ router.post('/hook',  (req, res) => {
 router.get('/', (req, res) => {
     const data = diskdb.connect(dbPath, ['alerts'])
     const alerts = data.alerts.find()
-    res.json(alerts)
+    return res.json(alerts)
 })
 
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`))
