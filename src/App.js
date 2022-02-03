@@ -6,10 +6,14 @@ const App = () => {
   const [alerts, setAlerts] = useState([])
 
   const fetchData = async () => {
-    const results = await axios('/.netlify/functions/api')
-    console.info(results)
+    try {
+      const results = await axios('/.netlify/functions/api')
+      console.info(results)
 
-    setAlerts(results?.data)
+      setAlerts(results?.data)
+    } catch (e) {
+      console.error('ui error', e)
+    }
   }
 
 
