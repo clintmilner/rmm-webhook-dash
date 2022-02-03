@@ -7,7 +7,6 @@
 </head>
 <body>
 <h1>Welcome to RMM Webhook Dashboard</h1>
-</body>
 <script>
     fetch('https://rmm-webhook-dash.netlify.app/.netlify/functions/api').then((response) => {
         // The API call was successful!
@@ -17,4 +16,5 @@
         console.warn('Something went wrong.', err);
     });
 </script>
+</body>
 </html>
