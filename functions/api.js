@@ -1,7 +1,7 @@
-const diskdb = require('diskdb')
-const dbPath = './src/db'
 
 exports.handler = async (event, context) => {
+    const diskdb = require('diskdb')
+    const dbPath = './src/db'
     const data = diskdb.connect(dbPath, ['alerts'])
     const alerts = await data.alerts.find()
     return {
