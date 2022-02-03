@@ -2,21 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; font-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.netlify.app">
     <title>RMM Webhook Dashboard</title>
-    <link rel="shortcut icon" type="image/jpg" href="img/favicon.ico"/>
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.ico"/>
 </head>
 <body>
 <h1>Welcome to RMM Webhook Dashboard</h1>
 <script>
-    const local = 'https://unlucky-hound-4.loca.lt/.netlify/functions/api'
     const url = 'https://rmm-webhook-dash.netlify.app/.netlify/functions/api'
-    fetch(local).then((response) => {
-        // The API call was successful!
-        console.log('success!', response);
-    }).catch((err) => {
-        // There was an error
-        console.warn('Something went wrong.', err);
-    });
+    fetch(url)
+        .then(response => response.json())
+        .then(data => console.log('data returned', data))
+        .catch((err) => console.warn('Something went wrong.', err))
 </script>
 </body>
 </html>
