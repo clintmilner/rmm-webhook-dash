@@ -8,10 +8,12 @@
 <body>
 <h1>Welcome to RMM Webhook Dashboard</h1>
 <script>
-    fetch('https://rmm-webhook-dash.netlify.app/.netlify/functions/api').then((response) => {
+    const local = 'https://unlucky-hound-4.loca.lt/.netlify/functions/api'
+    const url = 'https://rmm-webhook-dash.netlify.app/.netlify/functions/api'
+    fetch(local).then((response) => {
         // The API call was successful!
         console.log('success!', response);
-    }).catch(function (err) {
+    }).catch((err) => {
         // There was an error
         console.warn('Something went wrong.', err);
     });
