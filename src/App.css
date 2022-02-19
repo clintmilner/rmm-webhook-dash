@@ -1,6 +1,9 @@
-.dashboard {
-  display: flex;
-  height: 100vh;
+html {
   background: #002a3a;
   color: #fcf3f3;
+  text-align: center;
+}
+.dashboard {
+  height: 100vh;
+  width: 90%;
 }

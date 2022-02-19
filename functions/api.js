@@ -9,12 +9,18 @@ exports.handler = (event, context) => {
   })
 
   return client
-    .query(q.Get(q.Collection('alerts')))
+    .query(
+      q.Map(
+        q.Paginate(q.Match(q.Index('all_webhook_alerts'))),
+        q.Lambda('x', q.Get(q.Var('x'))),
+      ),
+    )
     .then(ret => {
-      console.log('anything?', ret)
+      const data = ret?.data.map(alert => q.Get(q.Ref(alert)))
+
       return {
         statusCode: 200,
-        body: JSON.stringify(ret),
+        body: JSON.stringify(data),
       }
     })
     .catch(err => {

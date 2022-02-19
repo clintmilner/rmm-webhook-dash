@@ -8,9 +8,17 @@ const App = () => {
   const fetchData = async () => {
     try {
       const results = await axios('/.netlify/functions/api')
-      console.info(results)
+      // console.info(results.data)
+      const data = results?.data.map(result => {
+        const alert = result.get['@ref'].object.data.object
+        console.info(alert)
 
-      setAlerts(results?.data)
+        return alert
+      })
+
+      console.info(data)
+
+      setAlerts(data)
     } catch (e) {
       console.error('ui error', e)
     }
@@ -24,7 +32,34 @@ const App = () => {
     <>
       <h2>RMM Webhook Dashboard</h2>
       <div className="dashboard">
-        <pre>{JSON.stringify(alerts)}</pre>
+        <table>
+          <thead>
+            <tr>
+              <th>hostname</th>
+              <th>device id</th>
+              <th>site id</th>
+              <th>site name</th>
+              <th>priority</th>
+              <th>message</th>
+              <th>category</th>
+              <th>date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {alerts.map((alert, idx) => (
+              <tr key={idx}>
+                <td>{alert?.hostname}</td>
+                <td>{alert?.deviceId}</td>
+                <td>{alert?.siteId}</td>
+                <td>{alert?.siteName}</td>
+                <td>{alert?.priority}</td>
+                <td>{alert?.msg}</td>
+                <td>{alert?.category}</td>
+                <td>{new Date(alert?.date).toUTCString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   )
