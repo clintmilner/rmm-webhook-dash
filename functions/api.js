@@ -1,4 +1,4 @@
-exports.handler = (event, context) => {
+exports.handler = () => {
   const faunadb = require('faunadb')
   const q = faunadb.query
   const client = new faunadb.Client({
