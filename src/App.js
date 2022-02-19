@@ -8,15 +8,9 @@ const App = () => {
   const fetchData = async () => {
     try {
       const results = await axios('/.netlify/functions/api')
-      // console.info(results.data)
-      const data = results?.data.map(result => {
-        const alert = result.get['@ref'].object.data.object
-        console.info(alert)
-
-        return alert
-      })
-
-      console.info(data)
+      const data = results?.data.map(
+        result => result.get['@ref'].object.data.object,
+      )
 
       setAlerts(data)
     } catch (e) {
