@@ -12,6 +12,14 @@
  *
  */
 exports.handler = event => {
+  const faunadb = require('faunadb')
+  const q = faunadb.query
+  const client = new faunadb.Client({
+    secret: process.env.FAUNADB_SERVER_SECRET,
+    domain: 'db.eu.fauna.com',
+    port: 443,
+    scheme: 'https',
+  })
   const body = JSON.parse(event.body)
   const { hostname, deviceId, siteId } = body
 
@@ -41,46 +49,23 @@ exports.handler = event => {
   const now = Date.now()
   const alert = { ...body, date: now }
 
-  console.log(alert)
 
-  return {
-    statusCode: 200,
-  }
-  // const faunadb = require('faunadb')
-  // const q = faunadb.query
-  // const client = new faunadb.Client({
-  //     secret: process.env.FAUNADB_SERVER_SECRET,
-  //     domain: 'db.eu.fauna.com',
-  //     port: 443,
-  //     scheme: 'https',
-  // })
+  client
+    .query(q.Create(q.Collection('all_webhook_alerts'), { data: alert }))
+    .then(ret => ({
+      statusCode: 200,
+    }))
+    .catch(err => {
+      console.error(
+        'Error: [%s] %s: %s',
+        err.name,
+        err.message,
+        err.errors()[0].description,
+      )
 
-  // return client
-  //     .query(
-  //         q.Map(
-  //             q.Paginate(q.Match(q.Index('all_webhook_alerts'))),
-  //             q.Lambda('x', q.Get(q.Var('x'))),
-  //         ),
-  //     )
-  //     .then(ret => {
-  //         const data = ret?.data.map(alert => q.Get(q.Ref(alert)))
-  //
-  //         return {
-  //             statusCode: 200,
-  //             body: JSON.stringify(data),
-  //         }
-  //     })
-  //     .catch(err => {
-  //         console.error(
-  //             'Error: [%s] %s: %s',
-  //             err.name,
-  //             err.message,
-  //             err.errors()[0].description,
-  //         )
-  //
-  //         return {
-  //             statusCode: 500,
-  //             body: JSON.stringify(err),
-  //         }
-  //     })
+      return {
+        statusCode: 500,
+        body: JSON.stringify(err),
+      }
+    })
 }
