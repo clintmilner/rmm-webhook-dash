@@ -35,6 +35,7 @@ exports.handler = event => {
   if (siteId === '[site_id]') {
     return {
       statusCode: 200,
+      body: 'Webhook test was successful',
     }
   }
 
@@ -42,7 +43,7 @@ exports.handler = event => {
   if (siteId !== process.env.ALLOWED_SITE_ID) {
     return {
       statusCode: 400,
-      body: 'Error: data only accepted from certain sites',
+      body: 'Error: alert data is only accepted from certain sites',
     }
   }
 
@@ -50,10 +51,11 @@ exports.handler = event => {
   const alert = { ...body, date: now }
 
 
-  client
-    .query(q.Create(q.Collection('all_webhook_alerts'), { data: alert }))
+  return client
+    .query(q.Create(q.Collection('alerts'), { data: alert }))
     .then(ret => ({
       statusCode: 200,
+      body: 'alert created successfully',
     }))
     .catch(err => {
       console.error(
