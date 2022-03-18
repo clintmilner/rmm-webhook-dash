@@ -7,7 +7,7 @@ const App = () => {
 
   const fetchData = async () => {
     try {
-      const results = await axios('/.netlify/functions/api')
+      const results = await axios('/.netlify/functions/controller')
       const data = results?.data.map(
         result => result.get['@ref'].object.data.object,
       )
