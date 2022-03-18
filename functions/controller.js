@@ -16,15 +16,6 @@ exports.handler = (event, context, callback) => {
 
   switch (verb) {
     case 'POST': {
-      const faunadb = require('faunadb')
-      const q = faunadb.query
-      const client = new faunadb.Client({
-        secret: process.env.FAUNADB_SERVER_SECRET,
-        domain: 'db.eu.fauna.com',
-        port: 443,
-        scheme: 'https',
-      })
-      console.log(verb, 'connected to db')
       const body = JSON.parse(event.body)
       const { hostname, deviceId, siteId } = body
 
@@ -55,8 +46,21 @@ exports.handler = (event, context, callback) => {
         })
       }
 
+
+      const faunadb = require('faunadb')
+      const q = faunadb.query
+      const client = new faunadb.Client({
+        secret: process.env.FAUNADB_SERVER_SECRET,
+        domain: 'db.eu.fauna.com',
+        port: 443,
+        scheme: 'https',
+      })
+      console.log(verb, 'connected to db')
+
       const now = Date.now()
       const alert = { ...body, date: now }
+
+      console.log('build the alert', JSON.stringify(alert))
 
       return client
         .query(q.Create(q.Collection('alerts'), { data: alert }))
