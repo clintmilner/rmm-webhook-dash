@@ -24,11 +24,13 @@ exports.handler = (event, context, callback) => {
         port: 443,
         scheme: 'https',
       })
+      console.log(verb, 'connected to db')
       const body = JSON.parse(event.body)
       const { hostname, deviceId, siteId } = body
 
       // validate the data is good
       if (!hostname || !deviceId || !siteId) {
+        console.log('Error: request does not contain valid details')
         return callback(null, {
           statusCode: 400,
           body: 'Error: request does not contain valid details',
@@ -37,6 +39,7 @@ exports.handler = (event, context, callback) => {
 
       // successful webhook test
       if (siteId === '[site_id]') {
+        console.log('successful webhook test')
         return callback(null, {
           statusCode: 200,
           body: 'Webhook test was successful',
@@ -45,6 +48,7 @@ exports.handler = (event, context, callback) => {
 
       // only accepting data from our site
       if (siteId !== process.env.ALLOWED_SITE_ID) {
+        console.log('Error: alert data is only accepted from certain sites')
         return callback(null, {
           statusCode: 400,
           body: 'Error: alert data is only accepted from certain sites',
@@ -57,13 +61,14 @@ exports.handler = (event, context, callback) => {
       return client
         .query(q.Create(q.Collection('alerts'), { data: alert }))
         .then(() => {
+          console.log('alert created successfully')
           return callback(null, {
             statusCode: 200,
             body: 'alert created successfully',
           })
         })
         .catch(err => {
-          console.error(
+          console.log(
             'Error: [%s] %s: %s',
             err.name,
             err.message,
@@ -85,6 +90,7 @@ exports.handler = (event, context, callback) => {
         port: 443,
         scheme: 'https',
       })
+      console.log(verb, 'connected to db')
 
       return client
         .query(
@@ -102,7 +108,7 @@ exports.handler = (event, context, callback) => {
           }
         })
         .catch(err => {
-          console.error(
+          console.log(
             'Error: [%s] %s: %s',
             err.name,
             err.message,
@@ -116,6 +122,7 @@ exports.handler = (event, context, callback) => {
         })
     }
     default: {
+      console.log('unsupported method', verb)
       return {
         statusCode: 500,
         body: JSON.stringify({ msg: 'unsupported method' }),
